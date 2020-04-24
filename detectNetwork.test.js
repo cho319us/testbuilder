@@ -101,18 +101,24 @@ describe('MasterCard', function() {
   // Expect syntax is one way to do this, but there are others.
   // If you want to know more, check out the documentation.
   //   http://chaijs.com/api/bdd/
-  var expect = chai.expect;
+
+  // var expect = chai.expect;
+  // it('has a prefix of 51 and a length of 16', function() {
+  //   expect(detectNetwork('5112345678901234')).to.equal('MasterCard');
+  // });
+
+  var should = chai.should();
 
   it('has a prefix of 51 and a length of 16', function() {
-    expect(detectNetwork('5112345678901234')).to.equal('MasterCard');
+    detectNetwork('5112345678901234').should.equal('MasterCard');
   });
 
   it('has a prefix of 52 and a length of 16', function() {
-    expect(detectNetwork('5212345678901234')).to.equal('MasterCard');
+    detectNetwork('5212345678901234').should.equal('MasterCard');
   });
 
   it('has a prefix of 53 and a length of 16', function() {
-    expect(detectNetwork('5312345678901234')).to.equal('MasterCard');
+    detectNetwork('5312345678901234').should.equal('MasterCard');
   });
 
 
@@ -138,38 +144,38 @@ describe('MasterCard', function() {
 describe('Discover', function() {
   // Tests without a function will be marked as "pending" and not run
   // Implement these tests (and others) and make them pass!
-  var assert = chai.assert;
+  var should = chai.should();
 
-  it('has a prefix of 6011 and a length of 16', function() {
-    assert(detectNetwork('6011567890123456') === 'Discover');
-  });
+  var discover = {
+    prefixes: ['6011', '644', '645', '646', '647', '648', '649', '65'],
+    lengths: [16,19]
+  };
 
-  it('has a prefix of 6011 and a length of 19', function() {
-    assert(detectNetwork('6011567890123456789') === 'Discover');
-  });
-
-  it('has a prefix of 644-649 and a length of 16', function() {
-    assert(detectNetwork('644-649890123456') === 'Discover');
-  });
-  it('has a prefix of 644-649 and a length of 19', function() {
-    assert(detectNetwork('644-649890123456789') === 'Discover');
-  });
-
-  it('has a prefix of 65 and a length of 16', function() {
-    assert(detectNetwork('6534567890123456') === 'Discover');
-  });
-
-  it('has a prefix of 65 and a length of 19', function() {
-    assert(detectNetwork('6534567890123456789') === 'Discover');
-  });
+  // iterate prefixes array
+  for(let i=0; i<discover.prefixes.length; i++){
+    // iterate lenghts array
+    for(let j=0; j<discover.lengths.length; j++){
+      // assign current string in prefixes array to cardNumberString
+      let cardNumberString = discover.prefixes[i];
+      // when the length of cardNumberString is less than the current number of lenghts array
+      while(cardNumberString.length < discover.lengths[j]){
+        // add one string to cardNumberString untill the length of current string in prefixes array is euqal to the current number of lenghts array
+        cardNumberString += '1';
+      }
+      // check if the return value of detectNetwork(cardNumberString) is equal to 'Discover'
+      it('has a prefix of ' + discover.prefixes[i] + ' and a length of ' + discover.lengths[j], function() {
+        detectNetwork(cardNumberString).should.equal('Discover');
+      });
+    }
+  }
 });
 
 describe('Maestro', function() {
   // Write full test coverage for the Maestro card
-  var assert = chai.assert;
+  var should = chai.should();
 
   var maestro = {
-    prefixes: ['5018', '5020', '6304'],
+    prefixes: ['5018', '5020', '5038', '6304'],
     lengths: [12, 13, 14, 15, 16, 17, 18, 19]
   };
 
@@ -186,7 +192,7 @@ describe('Maestro', function() {
       }
       // check if the return value of detectNetwork(cardNumberString) is equal to 'Maestro'
       it('has a prefix of ' + maestro.prefixes[i] + ' and a length of ' + maestro.lengths[j], function() {
-        assert(detectNetwork(cardNumberString) === 'Maestro');
+        detectNetwork(cardNumberString).should.equal('Maestro');
       });
     }
   }

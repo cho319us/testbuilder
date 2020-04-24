@@ -28,11 +28,11 @@ var detectNetwork = function(cardNumber) {
     lengths: [16]
   },{ // Discover always has a prefix of 6011, 644-649, or 65, and a length of 16 or 19.
     network: 'Discover',
-    prefixes: ['6011', '644-649', '65'],
+    prefixes: ['6011', '644', '645', '646', '647', '648', '649', '65'],
     lengths: [16, 19]
   },{ // Maestro always has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19.
     network: 'Maestro',
-    prefixes: ['5018', '5020', '6304'],
+    prefixes: ['5018', '5020', '5038', '6304'],
     lengths: [12, 13, 14, 15, 16, 17, 18, 19]
   }];
 

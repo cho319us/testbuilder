@@ -142,11 +142,57 @@ describe('MasterCard', function() {
 describe('Discover', function() {
   // Tests without a function will be marked as "pending" and not run
   // Implement these tests (and others) and make them pass!
-  it('has a prefix of 6011 and a length of 16');
-  it('has a prefix of 6011 and a length of 19');
+  var assert = chai.assert;
+
+  it('has a prefix of 6011 and a length of 16', function() {
+    assert(detectNetwork('6011567890123456') === 'Discover');
+  });
+
+  it('has a prefix of 6011 and a length of 19', function() {
+    assert(detectNetwork('6011567890123456789') === 'Discover');
+  });
+
+  it('has a prefix of 644-649 and a length of 16', function() {
+    assert(detectNetwork('644-649890123456') === 'Discover');
+  });
+  it('has a prefix of 644-649 and a length of 19', function() {
+    assert(detectNetwork('644-649890123456789') === 'Discover');
+  });
+
+  it('has a prefix of 65 and a length of 16', function() {
+    assert(detectNetwork('6534567890123456') === 'Discover');
+  });
+
+  it('has a prefix of 65 and a length of 19', function() {
+    assert(detectNetwork('6534567890123456789') === 'Discover');
+  });
 });
 
 describe('Maestro', function() {
   // Write full test coverage for the Maestro card
+  // var assert = chai.assert;
+
+  var maestro = {
+    prefixes: ['5018', '5020', '6304'],
+    lengths: [12, 13, 14, 15, 16, 17, 18, 19]
+  };
+
+  // iterate prefixes array
+  for(let i=0; i<maestro.prefixes.length; i++){
+    // iterate lenghts array
+    for(let j=0; j<maestro.lengths.length; j++){
+      // assign current string in prefixes array to cardNumberString
+      let cardNumberString = maestro.prefixes[i];
+      // when the length of cardNumberString is less than the current number of lenghts array
+      while(cardNumberString.length < maestro.lengths[j]){
+        // add one string to cardNumberString untill the length of current string in prefixes array is euqal to the current number of lenghts array
+        cardNumberString += '1';
+      }
+      // check if the return value of detectNetwork(cardNumberString) is equal to 'Maestro'
+      it('has a prefix of ' + maestro.prefixes[i] + ' and a length of ' + maestro.lengths[j], function() {
+        assert(detectNetwork(cardNumberString) === 'Maestro');
+      });
+    }
+  }
 });
 

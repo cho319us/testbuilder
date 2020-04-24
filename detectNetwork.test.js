@@ -198,3 +198,70 @@ describe('Maestro', function() {
   }
 });
 
+describe('Switch', function() {
+  // Write full test coverage for the Switch card
+  var should = chai.should();
+
+  var switchCard = {
+    prefixes: ['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759'],
+    lengths: [16, 18, 19]
+  };
+
+  // iterate prefixes array
+  for(let i=0; i<switchCard.prefixes.length; i++){
+    // iterate lenghts array
+    for(let j=0; j<switchCard.lengths.length; j++){
+      // assign current string in prefixes array to cardNumberString
+      let cardNumberString = switchCard.prefixes[i];
+      // when the length of cardNumberString is less than the current number of lenghts array
+      while(cardNumberString.length < switchCard.lengths[j]){
+        // add one string to cardNumberString untill the length of current string in prefixes array is euqal to the current number of lenghts array
+        cardNumberString += '1';
+      }
+      // check if the return value of detectNetwork(cardNumberString) is equal to 'Switch'
+      it('has a prefix of ' + switchCard.prefixes[i] + ' and a length of ' + switchCard.lengths[j], function() {
+        detectNetwork(cardNumberString).should.equal('Switch');
+      });
+    }
+  }
+});
+
+describe('China UnionPay', function() {
+  // Write full test coverage for the Switch card
+  var should = chai.should();
+
+  // China UnionPay always has a prefix of 622126-622925, 624-626, or 6282-6288
+  var chinaUnionNumPrefixes = [[622126, 622925],[624, 626],[6282, 6288]];
+  var chinaUnionStringPrefixes = [];
+  // iterate chinaUnionNumPrefixes
+  for(let i=0; i<chinaUnionNumPrefixes.length; i++){
+    // iterate from first number to second number of the inner array
+    for(let j=chinaUnionNumPrefixes[i][0]; j<=chinaUnionNumPrefixes[i][1]; j++){
+      // push the string version of the current number into the chinaUnionStringPrefixes array
+      chinaUnionStringPrefixes.push(j.toString());
+    }
+  }
+
+  var chinaUnionPay = {
+    prefixes: chinaUnionStringPrefixes,
+    lengths: [16, 17, 18, 19]
+  };
+
+  // iterate prefixes array
+  for(let i=0; i<chinaUnionPay.prefixes.length; i++){
+    // iterate lenghts array
+    for(let j=0; j<chinaUnionPay.lengths.length; j++){
+      // assign current string in prefixes array to cardNumberString
+      let cardNumberString = chinaUnionPay.prefixes[i];
+      // when the length of cardNumberString is less than the current number of lenghts array
+      while(cardNumberString.length < chinaUnionPay.lengths[j]){
+        // add one string to cardNumberString untill the length of current string in prefixes array is euqal to the current number of lenghts array
+        cardNumberString += '1';
+      }
+      // check if the return value of detectNetwork(cardNumberString) is equal to 'China UnionPay'
+      it('has a prefix of ' + chinaUnionPay.prefixes[i] + ' and a length of ' + chinaUnionPay.lengths[j], function() {
+        detectNetwork(cardNumberString).should.equal('China UnionPay');
+      });
+    }
+  }
+});

@@ -10,7 +10,25 @@
 var detectNetwork = function(cardNumber) {
   // Note: `cardNumber` will always be a string
 
-  var cardData = [{ // The American Express network always starts with a 34 or 37 and is 15 digits long
+  // China UnionPay always has a prefix of 622126-622925, 624-626, or 6282-6288
+  var chinaUnionNumPrefixes = [[622126, 622925],[624, 626],[6282, 6288]];
+  var chinaUnionStringPrefixes = [];
+  // iterate chinaUnionNumPrefixes
+  for(let i=0; i<chinaUnionNumPrefixes.length; i++){
+    // iterate from first number to second number of the inner array
+    for(let j=chinaUnionNumPrefixes[i][0]; j<=chinaUnionNumPrefixes[i][1]; j++){
+      // push the string version of the current number into the chinaUnionStringPrefixes array
+      chinaUnionStringPrefixes.push(j.toString());
+    }
+  }
+
+  var cardData = [{
+    // Switch always has a prefix of 4903, 4905, 4911, 4936, 564182, 633110, 6333, or 6759 and a length of 16, 18, or 19.
+    // Switch have to put before Visa because Switch include prefixes: ['4'] and lengths[16, 19], which will return Visa before checking more prefix
+    network: 'Switch',
+    prefixes: ['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759'],
+    lengths: [16, 18, 19]
+  },{ // The American Express network always starts with a 34 or 37 and is 15 digits long
     network: 'American Express',
     prefixes: ['34', '37'],
     lengths: [15]
@@ -34,6 +52,10 @@ var detectNetwork = function(cardNumber) {
     network: 'Maestro',
     prefixes: ['5018', '5020', '5038', '6304'],
     lengths: [12, 13, 14, 15, 16, 17, 18, 19]
+  },{ // China UnionPay always has a prefix of 622126-622925, 624-626, or 6282-6288 and a length of 16-19
+    network: 'China UnionPay',
+    prefixes: chinaUnionStringPrefixes,
+    lengths: [16, 17, 18, 19]
   }];
 
   //iterate the cardData array

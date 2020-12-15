@@ -1,4 +1,5 @@
-# seip2005-testbuilder
+# testbuilder
+This is a project I completed as a student at [hackreactor](http://hackreactor.com).
 
 File
 1. index.html - Homepage
